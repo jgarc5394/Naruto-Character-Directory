@@ -1,7 +1,7 @@
 {
   "name": "server-node",
   "version": "1.0.0",
-  "description": "Basic REST API Server",
+  "description": "Naruto-Server",
   "main": "src/index.js",
   "scripts": {
     "build": "babel ./src --out-dir ./build",
