@@ -1,10 +1,10 @@
 import { Router } from 'express'
 import basicAuth from 'express-basic-auth'
 
-import persons from './characters'
-import companies from './companies'
-import departments from './departments'
-import employees from './employees'
+import characters from './characters'
+import villages from './villages'
+import clans from './clans'
+import characterIDs from './characterIDs'
 
 const router = Router()
 
@@ -19,8 +19,8 @@ router.get('/', (req, res) => {
 })
 
 router.use('/characters', characters)
-router.use('/companies', companies)
-router.use('/departments', departments)
-router.use('/employees', employees)
+router.use('/villages', villages)
+router.use('/clans', clans)
+router.use('/characterIDs', characterIDs)
 
 export default router
