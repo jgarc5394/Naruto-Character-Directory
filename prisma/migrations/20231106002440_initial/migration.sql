@@ -6,7 +6,7 @@ CREATE TABLE "Character" (
     "village" TEXT NOT NULL,
     "jutsus"   TEXT NOT NULL,
     "image"  TEXT NOT NULL,
-    "quote"  
+    "quote"  TEXT
 
     CONSTRAINT "Character_pkey" PRIMARY KEY ("characterId")
 );
