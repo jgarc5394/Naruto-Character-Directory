@@ -1,5 +1,5 @@
 {
-  "name": "server-node",
+  "name": "naruto-directory",
   "version": "1.0.0",
   "description": "Naruto-Server",
   "main": "src/index.js",
