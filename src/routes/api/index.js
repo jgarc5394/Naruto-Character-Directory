@@ -17,6 +17,5 @@ router.get('/', (req, res) => {
 })
 
 router.use('/characters', characters)
-router.use('/characterIDs', characterIDs)
 
 export default router
