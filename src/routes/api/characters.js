@@ -1,22 +1,30 @@
 import { Router } from 'express'
 
 import {
-  getCharacters,
   getCharacter,
-  createCharacter,
+  getCharacters,
+  addCharacter,
   updateCharacter,
   deleteCharacter,
 } from '../../models/characters'
 
 const router = Router()
 
-router.get('/', (req, res) => {
-  const characters = getCharacters()
+router.get('/', async (req, res) => {
+  const size = Number(req.query.size) || 10
+  const page = Number(req.query.page) || 1
+  const skip = size * (page - 1)
+  const take = size
+  const { count, characters } = await getCharacters(skip, take)
+  res.set({
+    'X-Total-Count': count,
+    'X-Total-Pages': Math.ceil(count / size),
+  })
   res.send(characters)
 })
 
-router.get('/:id', (req, res) => {
-  const character = getCharacter(req.params.id)
+router.get('/:id', async (req, res) => {
+  const character = await getCharacter(req.params.id)
   if (character) {
     res.send(character)
   } else {
@@ -24,28 +32,24 @@ router.get('/:id', (req, res) => {
   }
 })
 
-router.post('/', (req, res) => {
-  const newCharacter = createCharacter(req.body)
-  if (newCharacter) {
-    res.status(201).send(newCharacter)
-  } else {
-    res.status(400).send({ msg: 'Bad request' })
-  }
+router.post('/', async (req, res) => {
+  const character = await addCharacter(req.body)
+  res.send(character)
 })
 
-router.put('/:id', (req, res) => {
-  const updatedCharacter = updateCharacter(req.params.id, req.body)
-  if (updatedCharacter) {
-    res.send(updatedCharacter)
+router.put('/:id', async (req, res) => {
+  const character = await updateCharacter(req.params.id, req.body)
+  if (character) {
+    res.send(character)
   } else {
     res.status(404).send({ msg: 'Character not found' })
   }
 })
 
-router.delete('/:id', (req, res) => {
-  const deleted = deleteCharacter(req.params.id)
-  if (deleted) {
-    res.send({ msg: `Character ${req.params.id} Deleted` })
+router.delete('/:id', async (req, res) => {
+  const character = await deleteCharacter(req.params.id)
+  if (character) {
+    res.send(character)
   } else {
     res.status(404).send({ msg: 'Character not found' })
   }

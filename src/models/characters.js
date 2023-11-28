@@ -1,33 +1,30 @@
-import { v4 as uuid } from 'uuid'
+import db from '../utils/db'
 
-const characters = []
-
-export const getCharacters = () => characters
-
-export const getCharacter = (id) => {
-  return characters.find((character) => character.id === id)
+export const getCharacters = async (skip, take) => {
+  const count = await db.character.count()
+  const characters = await db.character.findMany({
+    skip,
+    take,
+  })
+  return { count, characters }
 }
 
-export const createCharacter = (character) => {
-  const id = uuid()
-  characters.push({ id, ...character })
-  return getCharacter(id)
-}
+export const getCharacter = async (id) =>
+  db.character.findUnique({ where: { characterId: id } })
 
-export const updateCharacter = (id, character) => {
-  const databaseCharacter = getCharacter(id)
-  if (databaseCharacter) {
-    const characterIndex = characters.findIndex((c) => c.id === id)
-    characters[characterIndex] = { id, ...character }
+export const addCharacter = async (characterData) =>
+  db.character.create({ data: { ...characterData } })
+
+export const updateCharacter = async (id, characterData) => {
+  const character = await getCharacter(id)
+  if (character) {
+    return db.character.update({
+      where: { characterId: id },
+      data: { ...character, ...characterData, updatedAt: new Date() },
+    })
   }
-  return getCharacter(id)
+  return null
 }
 
-export const deleteCharacter = (id) => {
-  const characterIndex = characters.findIndex((c) => c.id === id)
-  if (characterIndex !== -1) {
-    characters.splice(characterIndex, 1)
-    return true
-  }
-  return false
-}
+export const deleteCharacter = async (id) =>
+  db.character.delete({ where: { characterId: id } })
