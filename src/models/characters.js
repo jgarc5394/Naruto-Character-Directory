@@ -20,7 +20,7 @@ export const updateCharacter = (id, character) => {
     const characterIndex = characters.findIndex((c) => c.id === id)
     characters[characterIndex] = { id, ...character }
   }
-  return getPerson(id)
+  return getCharacter(id)
 }
 
 export const deleteCharacter = (id) => {
