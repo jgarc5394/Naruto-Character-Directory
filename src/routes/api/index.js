@@ -2,7 +2,6 @@ import { Router } from 'express'
 import basicAuth from 'express-basic-auth'
 
 import characters from './characters'
-import characterIDs from './characterIDs'
 
 const router = Router()
 
